@@ -1,0 +1,68 @@
+//===== rAthena Script for [ExRO] ============================
+//= Bonus Script for Old Member
+//===== Description: =========================================
+//= Unwichtig weil privat
+//===== Additional Comments: =================================
+//= 1.0 Masao baut
+//= 1.1 Masao baut weiter
+//= 1.2 Innos tüftelt
+//= 1.3 Masao bekommt zurück
+//= 1.4 Innos tüftelt
+//= 1.5 Change exro_sql zu oldmember_sql
+//============================================================
+izlude,129,138,6	script	exrosql	123,{
+
+/*
+CREATE TABLE IF NOT EXISTS `oldmember_sql` (
+ `account_id` int(11) UNSIGNED NOT NULL DEFAULT '0' PRIMARY KEY,
+ `userid` varchar(24) NOT NULL DEFAULT '',
+ `email` varchar(39) NOT NULL DEFAULT '',
+ `logincount` mediumint(8) UNSIGNED NOT NULL DEFAULT '0',
+ `last_login` datetime DEFAULT '0000-00-00 00:00:00',
+ `last_ip` varchar(100) NOT NULL default '0',
+ `new_account_id` int(11) UNSIGNED NOT NULL DEFAULT '0',
+ `new_userid` varchar(23) NOT NULL default '',
+ `new_ip` varchar(100) NOT NULL DEFAULT '0',
+ `check` smallint(4) NOT NULL DEFAULT '0'
+ ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+*/
+
+	mes "[ExRO Manager]";
+	mes "Hallo "+strcharinfo(0)+",";
+	mes "was kann ich für dich tun?";
+	next;
+	if(select("Preis abholen.:Beenden") == 1){
+		mes "[ExRO Manager]";
+		mes "Bitte gib einen Namen ein:";
+		next;
+		input @name$;
+		mes "[ExRO Manager]";
+		mes "Bitte gib eine E-Mail Addresse ein:";
+		next;
+		input @email$;
+		query_sql "SELECT `userid`, `email`, `check` FROM `oldmember_sql` WHERE `userid` = '"+escape_sql(@name$)+"'", @name$, @email$, @check;
+		if(!@name$){
+			mes "[ExRO Manager]";
+			mes "Es tut mir leid, aber den eingegebenen Namen gibt es nicht bei uns in der Datenbank.";
+			close;
+		} else if(!@email$){
+			mes "[ExRO Manager]";
+			mes "Es tut mir leid, die eingegebene E-Mail Adresse gibt es nicht bei uns in der Datenbank.";
+			close;
+		} else if(@check == 1){
+			mes "[ExRO Manager]";
+			mes "Du hast den Preis bereits abgeholt.";
+			close;
+		}
+		query_sql "SELECT `account_id`, `logincount`, `lastlogin`, `last_ip` FROM `login` WHERE `oldmember_sql` = '"+escape_sql(@name$)+"'", @account_id, @logincount, @lastlogin, @last_ip;
+		query_sql "SELECT `logincount`, `lastlogin`, `last_ip` FROM `login` WHERE `account_id` = '"+escape_sql(getcharid(3))+"'", @logincount2, @lastlogin2, @last_ip2;
+		query_sql "INSERT `oldmember_sql` (`account_id`, `userid`,`email`, `last_login`, `last_ip`, `new_account_id`, `new_userid`, `new_ip`, `check`) VALUES ('"+@account_id+"','"+@name$+"','"+@email$+"','"+@lastlogin+"','"+@last_ip+"','"+getcharid(3)+"','"+getcharid(0)+"','"+@last_ip2+"','1')";
+		mes "[ExRO Manager]";
+		mes "Vielen Dank für deine Eingabe! Hier ist dein Preis.";
+		getitem 1234,1;
+		close;
+	}
+	mes "[ExRO Manager]";
+	mes "Auf wiedersehen.";
+	close;
+}
