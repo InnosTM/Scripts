@@ -1,0 +1,67 @@
+-	script	Highest Peak	-1,{
+
+OnPCLoginEvent:
+
+sleep 1000;
+	if (.@OnPeakEvent == 1){dispbottom "Highest Peak Event Doppel EXP & Drop Event is active!";}
+.onlineusers = getusers(1);
+set .date$,gettime(7)+"-"+gettime(6)+"-"+gettime(5);
+query_sql("SELECT `users` FROM `cp_onlinepeak` ORDER BY `users` LIMIT 1",.@countusers);
+
+if(.onlineusers > .@countusers) {
+	if(.displaypeakannounce == 1){
+	query_sql("UPDATE `cp_onlinepeak` SET `users` = '" + .onlineusers + "', `date` = '" + .date$ + "'");
+	if (.@OnPeakEvent == 0){announce "[Event] : New Highest Peak reached with "+.onlineusers+" Player online!, we start Double EXP & Drop Event!",bc_all,0xFF6060;}
+	if (.@OnPeakEvent == 0){announce "[Event] : Double rates now enabled for the next 2 Hours!",bc_all,0xFF6060;}
+	if (.@OnPeakEvent == 1){announce "[Event] : New Highest Peak reached with "+.onlineusers+" Player, Peak Event start again!",bc_all,0xFF6060;}
+	sleep 5000;
+	goto OnPeakEvent;
+	end;
+		}
+	}
+end;
+
+OnPeakEvent:
+	if (.@OnPeakEvent == 0){
+	setbattleflag "base_exp_rate",1000;
+	setbattleflag "job_exp_rate",1000;
+	setbattleflag "item_rate_heal",600;
+	setbattleflag "item_rate_use",600;
+	setbattleflag "item_rate_equip",600;
+	setbattleflag "item_rate_card",600;
+	setbattleflag "item_rate_mvp",600;
+	setbattleflag "item_rate_adddrop",600;
+	setbattleflag "item_rate_treasure",600;
+	atcommand "!reloadmobdb";
+	set .@OnPeakEvent,1;
+	sleep 3600000; 
+	announce "[Event] : Highest Peak Event the second Hour is started!",bc_all,0xFF6060;
+	sleep 3600000; 
+	// start double rates on Friday 00:00
+	setbattleflag "base_exp_rate",500;
+	setbattleflag "job_exp_rate",500;
+	setbattleflag "item_rate_heal",300;
+	setbattleflag "item_rate_use",300;
+	setbattleflag "item_rate_equip", 300;
+	setbattleflag "item_rate_card",300;
+	setbattleflag "item_rate_mvp",300;
+	setbattleflag "item_rate_adddrop",300;
+	setbattleflag "item_rate_treasure",300;
+	atcommand "!reloadmobdb";
+	announce "[Event] : Highest Peak Event is over!",bc_all,0xFF6060;
+	announce "[Event] : Double rates now disabled!",bc_all,0xFF6060;
+	set .@OnPeakEvent,0;
+	end;
+	}else{
+	end;
+	}
+
+OnInit:
+	// Would you like an announcement when you reach a higher peak?
+	// 1 = Yes
+	// 0 = No
+	.displaypeakannounce = 1;
+
+// END CONFIGS
+
+}

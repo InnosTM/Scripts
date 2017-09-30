@@ -1,0 +1,49 @@
+
+-	script	exro_HappyHour_on	-1,{
+OnInit:
+	disablenpc "Happy Hour";
+	end;
+
+Onclock1500:
+	enablenpc "Happy Hour";
+	announce "[Happy Hour]: Willkommen zur Happy Hour!",bc_all;
+	announce "[Happy Hour]: In der kommenden Stunde kannst du bei mir in Izlude deinen EXP & Drop Boost holen...",bc_all;
+	sleep 3000000;
+	announce "[Happy Hour]: Noch 10 Minuten bis die Happy Hour beendet ist.",bc_all;
+	sleep 600000;
+	disablenpc "Happy Hour";
+	announce "[Happy Hour]: Happy Hour endet nun, wir sehen uns morgen zur selben Zeit!",bc_all;
+	end;
+	
+	
+Onclock2000:
+	enablenpc "Happy Hour";
+	announce "[Happy Hour]: Willkommen zur Happy Hour!",bc_all;
+	announce "[Happy Hour]: In der kommenden Stunde kannst du bei mir in Izlude deinen EXP & Drop Boost holen...",bc_all;
+	sleep 3000000;
+	announce "[Happy Hour]: Noch 10 Minuten bis die Happy Hour beendet ist.",bc_all;
+	sleep 600000;
+	disablenpc "Happy Hour";
+	announce "[Happy Hour]: Happy Hour endet nun, wir sehen uns morgen zur selben Zeit!",bc_all;
+	end;
+	
+	
+}
+
+
+izlude,128,138,3	script	Happy Hour	421,{
+
+	mes "[Happy Hour]";
+	mes "Willkommen auf exRO";
+	mes "Derzeit ist unsere Happy Hour aktiv.";
+	mes "Du bekommst nun für 30 Minuten 1,5fache EXP und Dropchance, komm danach wieder zu mir wenn die Zeit um ist.";
+	next;
+	mes "[Happy Hour]";
+	mes "Erzähle es deinen Freunden und empfehle uns weiter.";
+	mes "Wenn es dir bei uns gefällt,";
+	mes "Werbe und vote für uns.... Und nun viel Spaß beim Leveln...";
+	atcommand "!effect 679";
+	sc_start SC_EXPBOOST,1800000,50;		// 1.5 EXP	Zeit 30 Minuten
+	sc_start SC_ITEMBOOST,1800000,150;        // 1.5 DROP	Zeit 30 Minuten
+	close;
+}

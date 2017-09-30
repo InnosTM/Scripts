@@ -1,0 +1,22 @@
+izlude,136,109,4	script	Point Manager	4_EP16_SKIA,{
+
+OnTalk:
+
+	Query_SQL( "SELECT LEFT(balance, 6) FROM `cp_credits` WHERE `account_id`='"+getcharid(3)+"'", .@pcredits );
+	
+	mes .npc$;
+	mes "Welcome to your Point Manager.";
+	mes (gettime(3)>= 6&&gettime(3)<= 12?"Good Morning":(gettime(3)>=13&&gettime(3)<=18?"Good Afternoon":"Good Evening"))+", ^008aff"+strcharinfo(0)+"^000000 !";
+	mes" Komm später wieder!";
+	next;
+	mes .npc$;
+	mes "You have ^2E9AFE" +#CASHPOINTS+ "^000000 ExRO Cash";
+	mes "You have ^2E9AFE" +#KAFRAPOINTS+ "^000000 Free Cash";
+	mes "You have ^2E9AFE" +.@pcredits+ "^000000 ExRO Credits";
+	close;
+	
+	
+OnInit:
+	.npc$ = "^FF7F00[ Point Manager ]^000000";						// Name of NPC;
+	
+}

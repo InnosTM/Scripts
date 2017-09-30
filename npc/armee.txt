@@ -1,0 +1,190 @@
+//===== ExRO 2017 Script =====================================
+//= ExRO Army
+//===== Description: =========================================
+//= [Official Conversion]
+//= Informations Boards about monsters.
+//===== Changelogs: ==========================================
+//= 1.0 20 Ränge durch Monsterkill
+//= 1.0 Täglicher Zeny Sold pro Charakter
+//============================================================
+
+izlude,203,170,4	script	ExRO Armee	415,{
+
+set .@npc$,"[ ^000088General Eisenhower^000000 ]";
+set .@name$,"^0000FF" + strcharinfo(0) + ".^000000";
+
+if (soldat == 0){
+mes .@npc$;
+mes "Hallo " + .@name$;
+mes "Willkommen beim Rekrutierungsbüro";
+mes "der Midgard Befreiungsarmee.";
+mes "Ich bin hier der Oberbefehlshaber.";
+next;
+mes .@nps$;
+mes "Es gibt bei uns 14 verschiedene";
+mes "Dienstgrade. Je nach Dienstgrad";
+mes "steigt dein Sold der dir täglich";
+mes "ausbezahlt wird.";
+next;
+mes .@nps$;
+mes "Deinen Dienstgrad kannst du erhöhen";
+mes "indem du Monster erlegst und dafür";
+mes "Punkte erhälst. Pro Monster bekommst du einen Punkt.";
+next;
+mes .@npc$;
+mes "Also " + .@name$;
+mes "Bist du interessiert der Midgard";
+mes "Befreiungsarmee beizutreten?";
+menu "Nein",l_nein,"Ja",l_ja;
+} else {
+if (sold == 0){
+mes .@npc$;
+mes "Hallo " + .rang$[rang] + " " + .@name$;
+mes "Dein heutiger Sold : " + .sold[rang] + " Zeny";
+set zeny, zeny + .sold[rang];
+set sold,1;
+set tag$,gettimestr("%d.%m.%Y",21);
+close;
+} else {
+mes .@npc$;
+mes "Guten Tag " + .@name$;
+mes "Du hast deinen Sold heute bereits erhalten.";
+mes "Wie kann ich dir weiterhelfen?";
+next;
+menu "Mein Status",stat,"Ränge",bb;
+next;
+stat:
+mes .@npc$;
+mes "Aktueller Rang: ^ff0000" + .rang$[rang] + "^000000";
+mes "Aktuelle Punktzahl: " + grad + " Punkte";
+
+if (grad >= 0 && grad <= 99) mes "Nächster Rang: bei 100 Punkte";
+if (grad >= 100 && grad <= 499) mes "Nächster Rang: bei 500 Punkte";
+if (grad >= 500 && grad <= 999) mes "Nächster Rang: bei 1.000 Punkte";
+if (grad >= 1000 && grad <= 1999) mes "Nächster Rang: bei 2.000 Punkte";
+if (grad >= 2000 && grad <= 5999) mes "Nächster Rang: bei 4.000 Punkte";
+if (grad >= 6000 && grad <= 7999) mes "Nächster Rang: bei 6.000 Punkte";
+if (grad >= 8000 && grad <= 9999) mes "Nächster Rang: bei 8.000 Punkte";
+if (grad >= 10000 && grad <= 14999) mes "Nächster Rang: bei 10.000 Punkte";
+if (grad >= 15000 && grad <= 19999) mes "Nächster Rang: bei 15.000 Punkte";
+if (grad >= 20000 && grad <= 29999) mes "Nächster Rang: bei 20.000 Punkte";
+if (grad >= 30000 && grad <= 49999) mes "Nächster Rang: bei 30.000 Punkte";
+if (grad >= 50000 && grad <= 74999) mes "Nächster Rang: bei 50.000 Punkte";
+if (grad >= 75000 && grad <= 99999) mes "Nächster Rang: bei 75.000 Punkte";
+if (grad >= 100000 && grad <= 149999) mes "Nächster Rang: bei 100.000 Punkte";
+if (grad >= 150000 && grad <= 299999) mes "Nächster Rang: bei 150.000 Punkte";
+if (grad >= 300000 && grad <= 499999) mes "Nächster Rang: bei 300.000 Punkte";
+if (grad >= 500000 && grad <= 749999) mes "Nächster Rang: bei 500.000 Punkte";
+if (grad >= 750000 && grad <= 999999) mes "Nächster Rang: bei 750.000 Punkte";
+if (grad >= 1000000 && grad <= 4999999) mes "Nächster Rang: bei 1.000.000 Punkte";
+if (grad >= 5000000 && grad <= 99999999) mes "Nächster Rang: bei 5.000.000 Punkte";
+
+close;
+bb:
+mes .@npc$;
+mes "21.Anwärter"; //0-100 Punkte
+mes "20.Freiwilliger"; // ab 100
+mes "19.Neuling"; //ab 500
+mes "18.Soldat"; // ab 1000
+mes "17.Gefreiter"; // ab 2000
+mes "16.Obergefreiter"; // ab 4000
+mes "15.Hauptgefreiter"; // ab 6000
+mes "14.Unteroffizier"; // ab 8000
+mes "13.Oberstabsgefreiter"; // ab 10.000
+mes "12.Feldwebel"; // ab 15.000
+mes "11.Leutnant"; // ab 20.000
+mes "10.Hauptmann"; // ab 30.000
+mes "09.Major"; // ab 50.000
+mes "08.Oberst"; // ab 75.000
+mes "07.Brigadegeneral"; // ab 100.000
+mes "06.Generalmajor"; // ab 150.000
+mes "05.Generalleutnant"; // ab 300.000
+mes "04.General"; // ab 500.000
+mes "03.Marschall"; // ab 750.000
+mes "02.Kommandeur"; // ab 1.000.000
+mes "01.Legende"; // ab 5.000.000
+close;
+}
+}
+
+l_ja:
+next;
+mes .@npc$;
+mes "Nu denn " + .@name$;
+mes "Willkommen in der Midgard";
+mes "Befreiungsarmee.";
+set soldat,1;
+set rang,0;
+set aktiv,1;
+close;
+
+l_nein:
+mes .@npc$;
+mes "Dann machs mal gut, bis zum nächsten Mal.....";
+close;
+
+OnNPCKillEvent:
+if (soldat == 0) end;
+if (aktiv == 1) { set grad,grad + 1; } else { end; }
+
+if (grad == 100) { set rang,1; announce "Der Spieler " + strcharinfo(0) + " wurde soeben zum " + .rang$[rang] + " befördert.",BC_ALL; set sold,0; end; }
+if (grad == 500) { set rang,2; announce "Der Spieler " + strcharinfo(0) + " wurde soeben zum " + .rang$[rang] + " befördert.",BC_ALL; set sold,0; end; }
+if (grad == 1000) { set rang,3; announce "Der Spieler " + strcharinfo(0) + " wurde soeben zum " + .rang$[rang] + " befördert.",BC_ALL; set sold,0; end; }
+if (grad == 2000) { set rang,4; announce "Der Spieler " + strcharinfo(0) + " wurde soeben zum " + .rang$[rang] + " befördert.",BC_ALL; set sold,0; end; }
+if (grad == 4000) { set rang,5; announce "Der Spieler " + strcharinfo(0) + " wurde soeben zum " + .rang$[rang] + " befördert.",BC_ALL; set sold,0; end; }
+if (grad == 6000) { set rang,6; announce "Der Spieler " + strcharinfo(0) + " wurde soeben zum " + .rang$[rang] + " befördert.",BC_ALL; set sold,0; end; }
+if (grad == 8000) { set rang,7; announce "Der Spieler " + strcharinfo(0) + " wurde soeben zum " + .rang$[rang] + " befördert.",BC_ALL; set sold,0; end; }
+if (grad == 10000) { set rang,8; announce "Der Spieler " + strcharinfo(0) + " wurde soeben zum " + .rang$[rang] + " befördert.",BC_ALL; set sold,0; end; }
+if (grad == 15000) { set rang,9; announce "Der Spieler " + strcharinfo(0) + " wurde soeben zum " + .rang$[rang] + " befördert.",BC_ALL; set sold,0; end; }
+if (grad == 20000) { set rang,10; announce "Der Spieler " + strcharinfo(0) + " wurde soeben zum " + .rang$[rang] + " befördert.",BC_ALL; set sold,0; end; }
+if (grad == 30000) { set rang,11; announce "Der Spieler " + strcharinfo(0) + " wurde soeben zum " + .rang$[rang] + " befördert.",BC_ALL; set sold,0; end; }
+if (grad == 50000) { set rang,12; announce "Der Spieler " + strcharinfo(0) + " wurde soeben zum " + .rang$[rang] + " befördert.",BC_ALL; set sold,0; end; }
+if (grad == 75000) { set rang,13; announce "Der Spieler " + strcharinfo(0) + " wurde soeben zum " + .rang$[rang] + " befördert.",BC_ALL; set sold,0; end; }
+if (grad == 100000) { set rang,14; announce "Der Spieler " + strcharinfo(0) + " wurde soeben zum " + .rang$[rang] + " befördert.",BC_ALL; set sold,0; end; }
+if (grad == 150000) { set rang,15; announce "Der Spieler " + strcharinfo(0) + " wurde soeben zum " + .rang$[rang] + " befördert.",BC_ALL; set sold,0; end; }
+if (grad == 300000) { set rang,16; announce "Der Spieler " + strcharinfo(0) + " wurde soeben zum " + .rang$[rang] + " befördert.",BC_ALL; set sold,0; end; }
+if (grad == 500000) { set rang,17; announce "Der Spieler " + strcharinfo(0) + " wurde soeben zum " + .rang$[rang] + " befördert.",BC_ALL; set sold,0; end; }
+if (grad == 750000) { set rang,18; announce "Der Spieler " + strcharinfo(0) + " wurde soeben zum " + .rang$[rang] + " befördert.",BC_ALL; set sold,0; end; }
+if (grad == 1000000) { set rang,19; announce "Der Spieler " + strcharinfo(0) + " wurde soeben zum " + .rang$[rang] + " befördert.",BC_ALL; set sold,0; end; }
+if (grad == 5000000) { set rang,20; announce "Der Spieler " + strcharinfo(0) + " wurde soeben zum " + .rang$[rang] + " befördert.",BC_ALL; set sold,0; set aktiv,0; end; }
+
+OnInit:
+setarray .rang$[0],"Anwärter","Freiwilliger","Neuling","Soldat","Gefreiter","Obergefreiter","Hauptgefreiter","Unteroffizier","Oberstabsgefreiter","Feldwebel","Leutnant","Hauptmann","Major","Oberst","Brigadegeneral","Generalmajor","Generalleutnant","General","Marschall","Kommandeur","Legende";
+setarray .sold[0],0,100,200,300,400,500,600,700,800,900,1000,1100,1200,1300,1400,1500,1600,1700,1800,1900,2000;
+end;
+}
+
+new_1-1,61,118,4	duplicate(ExRO Armee)	ExRO Armee#1	415
+
+
+
+
+izlude,201,173,4	script	Topliste-Armee	857,{
+
+//	query_sql "SELECT `char_id` FROM `char` WHERE `name`='"+@char_name$+"'", @char_id;
+//	query_sql "SELECT `value` FROM `char_reg_num` WHERE `str`='grad' AND `char_id`="+@char_id, @die_counter;
+//	mes @char_name$+" died "+@die_counter+" times.";
+//	close;
+
+	set .@c, Query_SQL( "SELECT `char_id` FROM `char` WHERE `name` = `var`.`char_id` AND `var`.`str` = 'grad' ORDER BY CONVERT( `var`.`value`, SIGNED ) DESC LIMIT 50", .@name$, .@p$ );
+	if( .@c == 0 ) {
+		mes "[^006600 Hall Of Fame ^000000]";
+		mes "Noch kein Spieler eingetragen.";
+		close;
+	}
+
+	mes "[^006600 Hall Of Fame: TOP " + .@c + " ^000000 ]";
+	for( set .@i, 0; .@i < .@c; set .@i, .@i + 1 )
+		mes "[^FF0000" + ( .@i + 1 ) + "^000000] ^0000FF" + .@name$[ .@i ] + "^000000 (^008800" + .@p$ + "^000000) ";
+	close;
+
+
+}
+
+
+
+
+
+
+
+

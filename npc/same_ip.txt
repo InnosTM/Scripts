@@ -1,0 +1,43 @@
+//===== rAthena Script for [ExRO] ============================
+//= IP Manager Tool
+//===== Description: =========================================
+//= Unwichtig weil privat
+//===== Additional Comments: =================================
+//= 1.0 Idee wird vorbereitet
+//============================================================
+
+izlude,126,130,6	script	CheckIP	952,{
+	
+
+// IF GM 99
+
+	mes "[IP Manager]";
+	mes "Hallo "+strcharinfo(0)+",";
+	mes "was kann ich für dich tun?";
+	next;
+	input .@Name$;
+	set .@sizeacc, query_sql("SELECT `account_id` FROM `login` WHERE `last_ip` = '"+getcharip(getcharid(3, .@name$))+"'",.@aid);
+	set .@sizechar, query_sql("SELECT `name` FROM `char` WHERE `account_id` = '"+.@aid[.@Select]+"'",.@charname$);
+	
+	mes " Daten zu "+.@Name$+" sind:";
+
+// GESUCHTER SPIELER ONLINE / OFFLINE ANZEIGE
+	mes "Spieler ist aktuell online/offline";
+	
+// HIER DIE ANZEIGE DER LETZTEN IP
+	mes "Aktuelle IP ist: xxx.x.x";
+	next;
+	
+// HIER DIE ANZEIGE DER ACCOUNT ID'S:
+	mes "Account 01:  ACC ID";
+	mes "Account 02:  ACC ID";
+	mes "Account 03:  ACC ID";
+	mes "Account 04:  ACC ID";
+	mes "Account 05:  ACC ID";
+	close;
+
+	
+	
+
+
+}
